@@ -1,0 +1,24 @@
+{
+  "name": "team-gen",
+  "version": "1.0.0",
+  "description": "Project Week 10: OOP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smalone9/team-gen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smalone9/team-gen/issues"
+  },
+  "homepage": "https://github.com/smalone9/team-gen#readme",
+  "dependencies": {
+    "inquirer": "^8.1.1",
+    "jest": "^27.0.6"
+  }
+}
