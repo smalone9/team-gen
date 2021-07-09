@@ -3,91 +3,82 @@
 // require index.js in src folder
 const inquirer = require("inquirer");
 const fs = require("fs");
+const path = require("path");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 
-
 const employees = [];
 
 // 5 functions (createManager, createEngineer, createIntern, call as last thing in prev. functions: askNext: asks What do you want to do next--recursion, See results when ready to quit: new function calls fs function...within functions add details)
-function initIndex() {
-    startHtml();
-    addEmployee();
-}
-
 function addEmployee() {
-    inquirer.prompt([{
+  inquirer
+    .prompt([
+      {
         message: "Enter employee's name",
-        name: "name"
-    },
-    {
+        name: "name",
+      },
+      {
         type: "list",
         message: "What is their role?",
-        choices: [
-            "Manager",
-            "Engineer",
-            "Intern"
-        ],
-        name: "role"
-    },
-    {
+        choices: ["Manager", "Engineer", "Intern"],
+        name: "role",
+      },
+      {
         message: "What is their ID?",
-        name: "id"
-    },
-    {
+        name: "id",
+      },
+      {
         message: "What is their email?",
-        name: "email"
-    },
-])
-.then(function({name, role, id, email}) {
-    let roleDetail = "";
-    if (role === "Intern") {
+        name: "email",
+      },
+    ])
+    .then(function ({ name, role, id, email }) {
+      let roleDetail = "";
+      if (role === "Intern") {
         roleDetail = "school name";
-    } else if (role === "Engineer") {
+      } else if (role === "Engineer") {
         roleDetail = "Github name";
-    } else {
+      } else {
         roleDetail = "work number";
-    }
-    inquirer.prompt([{
-        message: `Enter employee's ${roleDetail}`,
-        name: "roleDetail"
-    },
-    {
-        type: "list",
-        message: "Would you like to continue adding employees?",
-        choices: [
-            "yes",
-            "no"
-        ],
-        name: "addMoreEmployees"
-    }
-])
-.then(function({roleDetail, addMoreEmployees}) {
-    let newEmployee;
-    if (role === "Engineer") {
-        newEmployee = new Engineer(name, id, email, roleDetail);
-    } else if (role === "Intern") {
-        newEmployee = new Intern(name, id, email, roleDetail);
-    } else {
-        newEmployee = new Manager(name, id, email, roleDetail);
-    }
-    employees.push(newEmployee);
-    addHtml(newEmployee)
-    .then(function() {
-        if (addMoreEmployees === "yes") {
-            addMoreEmployees();
-        } else {
-            finishHtml();
-        }
+      }
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            message: `Enter employee's ${roleDetail}`,
+            name: "roleDetail",
+          },
+          {
+            type: "list",
+            message: "Would you like to continue adding employees?",
+            choices: ["yes", "no"],
+            name: "addMoreEmployees",
+          },
+        ])
+        .then(function ({ roleDetail, addMoreEmployees }) {
+          let newEmployee;
+          if (role === "Engineer") {
+            newEmployee = new Engineer(name, id, email, roleDetail);
+          } else if (role === "Intern") {
+            newEmployee = new Intern(name, id, email, roleDetail);
+          } else {
+            newEmployee = new Manager(name, id, email, roleDetail);
+          }
+          employees.push(newEmployee);
+          addHtml(newEmployee).then(function () {
+            if (addMoreEmployees === "yes") {
+              addMoreEmployees();
+            } else {
+              finishHtml();
+            }
+          });
+        });
     });
-});
-});
 }
 
 // create Html
-function openHtml() {
-    const html = `<!DOCTYPE html>
+const html = `<!DOCTYPE html>
     <html lang="en">
     <head>
     <meta charset="UTF-8">
@@ -102,79 +93,63 @@ function openHtml() {
     </nav>
     <div class="container">
         <div class="row">`;
-fs.writeFile("./store/roster.html", html, function(err) {
-    if (err) {
-        console.log(err);
-    }
-});
-console.log("start");
-}
 
-function addHtml(employee) {
-    return new Promise(function(resolve, reject) {
-        const name = employee.getName();
-        const role = employee.getRole();
-        const id = employee.getId();
-        const email = employee.getEmail();
-        let data = "";
-        if (role === "Engineer") {
-            const gitHub = employee.getGitHub();
-            data = `<div class="col-6">
+function addHtml(arr) {
+  arr.forEach((employee) => {
+    const name = employee.getName();
+    const role = employee.getRole();
+    const id = employee.getId();
+    const email = employee.getEmail();
+    if (role === "Engineer") {
+      const gitHub = employee.getGitHub();
+      html += `<div class="col-6">
             <div class="card mx-auto mb-3" style="width: 18rem">
             <h5 class="card-header">${name}<br /><br />Engineer</h5>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID: ${id}</li>
-                <li class="list-group-item">Email Address: ${email}</li>
-                <li class="list-group-item">GitHub: ${gitHub}</li>
+            <li class="list-group-item">ID: ${id}</li>
+            <li class="list-group-item">Email Address: ${email}</li>
+            <li class="list-group-item">GitHub: ${gitHub}</li>
             </ul>
             </div>
         </div>`;
-        } else if (role === "Intern") {
-            const school = member.getSchool();
-            data = `<div class="col-6">
-            <div class="card mx-auto mb-3" style="width: 18rem">
-            <h5 class="card-header">${name}<br /><br />Intern</h5>
+    } else if (role === "Intern") {
+      const school = employee.getSchool();
+      html += `<div class="col-6">
+        <div class="card mx-auto mb-3" style="width: 18rem">
+        <h5 class="card-header">${name}<br /><br />Intern</h5>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID: ${id}</li>
-                <li class="list-group-item">Email Address: ${email}</li>
-                <li class="list-group-item">School: ${school}</li>
+            <li class="list-group-item">ID: ${id}</li>
+            <li class="list-group-item">Email Address: ${email}</li>
+            <li class="list-group-item">School: ${school}</li>
             </ul>
             </div>
-        </div>`;
-        } else {
-            const workNumber = employee.getWorkNumber();
-            data = `<div class="col-6">
+            </div>`;
+    } else {
+      const workNumber = employee.getWorkNumber();
+      html += `<div class="col-6">
             <div class="card mx-auto mb-3" style="width: 18rem">
             <h5 class="card-header">${name}<br /><br />Manager</h5>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID: ${id}</li>
-                <li class="list-group-item">Email Address: ${email}</li>
-                <li class="list-group-item">Office Phone: ${officePhone}</li>
+            <li class="list-group-item">ID: ${id}</li>
+            <li class="list-group-item">Email Address: ${email}</li>
+            <li class="list-group-item">Office Phone: ${workNumber}</li>
             </ul>
             </div>
-        </div>`
-        }
-        console.log("adding employees");
-        fs.appendFile("./store/roster.html", data, function (err) {
-            if (err) {
-                return reject(err);
-            };
-            return resolve();
-        });
-    });
-}
-
-// complete html
-function completeHtml() {
-    const html = `</div>
+            </div>`;
+    }
+  });
+  console.log("adding employees");
+  html += `</div>
     </div>
     
 </body>
 </html>`;
-    fs.appendFile("./store/roster.html", html, function (err) {
-        if (err) {
-            console.log(err);
-        };
-    });
-    console.log("end");
+  fs.writeFile("./store/roster.html", html, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("You successfully wrote to the file!");
+    }
+  });
 }
+addEmployee();
