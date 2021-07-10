@@ -110,6 +110,7 @@ function addEmployee() {
     });
 }
 function addHtml(arr) {
+  let html = ""
   arr.forEach((employee) => {
     const name = employee.getName();
     const role = employee.getRole();
@@ -167,5 +168,6 @@ function writeFile(file, fullHtmlPage) {
 }
 }
 addEmployee();
+genHTML();
 
 module.exports = [employees];
