@@ -4,6 +4,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const path = require("path");
+const genHTML = require("./src/page-template");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
@@ -17,20 +18,52 @@ function addEmployee() {
       {
         message: "Enter employee's name",
         name: "name",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
       },
+    },
       {
         type: "list",
         message: "What is their role?",
         choices: ["Manager", "Engineer", "Intern"],
         name: "role",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
       },
       {
         message: "What is their ID?",
         name: "id",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
       },
       {
         message: "What is their email?",
         name: "email",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
       },
     ])
     .then(function ({ name, role, id, email }) {
@@ -76,24 +109,6 @@ function addEmployee() {
         });
     });
 }
-
-// create Html
-const html = `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Team Gen</title>
-</head>
-<body>
-    <nav class="navbar navbar-dark bg-dark mb-5">
-        <span class="navbar-brand mb-0 h1 w-100 text-center">Team Profile</span>
-    </nav>
-    <div class="container">
-        <div class="row">`;
-
 function addHtml(arr) {
   arr.forEach((employee) => {
     const name = employee.getName();
@@ -137,14 +152,12 @@ function addHtml(arr) {
             </div>
             </div>`;
     }
-  });
+  })
   console.log("adding employees");
-  html += `</div>
-    </div>
-    
-</body>
-</html>`;
-  fs.writeFile("./store/roster.html", html, function (err) {
+  html += 
+
+function writeFile(file, fullHtmlPage) {
+  fs.writeFile("./dist/roster.html", html, function (err) {
     if (err) {
       console.log(err);
     } else {
@@ -152,4 +165,7 @@ function addHtml(arr) {
     }
   });
 }
+}
 addEmployee();
+
+module.exports = [employees];
