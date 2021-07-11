@@ -109,6 +109,7 @@ function addEmployee() {
         });
     });
 }
+
 function addHtml(arr) {
   let html = ""
   arr.forEach((employee) => {
@@ -156,9 +157,9 @@ function addHtml(arr) {
   })
   console.log("adding employees");
   html += 
-
-function writeFile(file, fullHtmlPage) {
-  fs.writeFile("./dist/roster.html", html, function (err) {
+// function to create HTML file
+function writeToFile(fileName, arr) {
+  return fs.writeFileSync(path.join("./dist/roster.html", html), function (err) {
     if (err) {
       console.log(err);
     } else {
@@ -166,6 +167,13 @@ function writeFile(file, fullHtmlPage) {
     }
   });
 }
+}
+// initialize app 
+function init() {
+  prompt(addEmployee)
+  .then(answers => {
+    writeToFile('roster.html', genHTML(answers))
+  })
 }
 addEmployee();
 genHTML();
