@@ -108,7 +108,7 @@ function addEmployee() {
           });
         });
     });
-}
+};
 
 function addHtml(arr) {
   let html = ""
@@ -155,8 +155,10 @@ function addHtml(arr) {
             </div>`;
     }
   })
+
   console.log("adding employees");
   html += 
+
 // function to create HTML file
 function writeToFile(fileName, arr) {
   return fs.writeFileSync(path.join("./dist/roster.html", html), function (err) {
@@ -166,15 +168,15 @@ function writeToFile(fileName, arr) {
       console.log("You successfully wrote to the file!");
     }
   });
-}
-}
+};
 // initialize app 
 function init() {
   prompt(addEmployee)
   .then(answers => {
     writeToFile('roster.html', genHTML(answers))
   })
-}
+};
+};
 addEmployee();
 genHTML();
 
