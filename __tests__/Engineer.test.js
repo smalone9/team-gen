@@ -10,12 +10,12 @@ test('creates engineer object', () => {
 // test github username
 test("GitHub responsive", () => {
     const testValue = "GitHub";
-    const Engineer = new Engineer("blue", 4, "cory@gmail.com", testValue);
-    expect(Engineer.getGithub()).toBe(testValue);
+    const engineer = new Engineer("blue", 4, "cory@gmail.com", testValue);
+    expect(engineer.getGitHub()).toBe(testValue);
 })
 // test getRole
 test("GetRole responsive", () => {
     const testValue = "Engineer";
-    const Engineer = new Engineer("blue", 4, "cory@gmail.com", testValue);
-    expect(Engineer.getRole()).toBe(testValue);
+    const engineer = new Engineer("blue", 4, "cory@gmail.com", testValue);
+    expect(engineer.getRole()).toBe(testValue);
 })

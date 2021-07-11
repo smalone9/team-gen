@@ -1,5 +1,4 @@
 const Manager = require("../lib/Manager");
-const Manager = require("../lib/Manager");
 
 // test create manager obj.
 test('creates manager object', () => {
@@ -11,13 +10,13 @@ test('creates manager object', () => {
 // test workNumber
 test("workNumber responsive", () => {
     const testValue = "Manager";
-    const Manager = new Manager("blue", 4, "cory@gmail.com", 4537214);
-    expect(Manager.getWorkNumber()).toEqual(expect.any(Number));
+    const manager = new Manager("blue", 4, "cory@gmail.com", 4537214);
+    expect(manager.getWorkNumber()).toEqual(expect.any(Number));
 });
 
 // test getRole
 test("GitHub responsive", () => {
     const testValue = "Manager";
-    const Manager = new Manager("blue", 4, "cory@gmail.com", testValue);
-    expect(Manager.getRole()).toBe(testValue);
+    const manager = new Manager("blue", 4, "cory@gmail.com", testValue);
+    expect(manager.getRole()).toBe(testValue);
 });

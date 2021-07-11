@@ -1,5 +1,6 @@
 const Employee = require("../lib/Employee");
 
+// test for employee obj.
 test('creates employee object', () => {
     const employee = new Employee();
 
