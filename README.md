@@ -6,7 +6,7 @@ AS A manager
 I WANT to generate a webpage that displays my team's basic info
 SO THAT I have quick access to their emails and GitHub profiles
 
-![Image of Team Generator](snapshot.PNG)
+![Image of Team Generator](./snapshot.png)
 
 ## Criteria
 GIVEN a command-line application that accepts user input
