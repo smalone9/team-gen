@@ -38,3 +38,4 @@ THEN I exit the application, and the HTML is generated
 
 ## Contribution
 Made with ❤️ by Sami
+(Shout out to Tyler Bolty-tutor & Jeremy Lentz-classmate for help)
