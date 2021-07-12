@@ -1,9 +1,9 @@
-const genHtml = require("./src/page-template");
 // require 3 class constructors
 // need Inquirer, Path, fs
 // require index.js in src folder
 const inquirer = require("inquirer");
 const fs = require("fs");
+const genHtml = require("./src/page-template");
 // const path = require("path");
 // const addHtml = require("./src/page-template.js");
 
@@ -78,6 +78,123 @@ const addMan= () => {
       },
       },
     ])
+    .then(manInput => {
+      const { name, id, email, workNumber } = manInput;
+      const manager = new Manager (name, id, email, workNumber);
+
+      employees.push(manager);
+      console.log(manager);
+    });
+  };
+
+  const addEmployee = () => {
+    console.log(`
+    Adding to team
+    `);
+
+    return inquirer.prompt ([
+      {
+        type: "list",
+        message: "Choose role",
+        choices: ["Engineer", "Intern"],
+        name: "role",        
+      },
+      {
+        type: "input",
+        message: "Enter employee's name",
+        name: "name",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
+    },
+      {
+        type: "input",
+        message: "What is their ID?",
+        name: "id",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
+      },
+      {
+        type: "input",
+        message: "What is their email?",
+        name: "email",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
+      },
+      {
+        type: "input",
+        message: "What is their gitHub username?",
+        name: "github",
+        when: (input) => input.role === "Engineer",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
+      },
+      {
+        type: "input",
+        message: "What is their school name?",
+        name: "school",
+        when: (input) => input.role === "Intern",
+        validate: (addInput) => {
+          if (addInput) {
+          return true;
+        } else {
+          console.log("Invalid");
+          return false;
+        }
+      },
+      },
+      {
+        type: "confirm",
+        name: "confirmMore",
+        message: "Do you want to add more employees?",
+        default: false
+      }
+    ])
+    .then(teamData => {
+      let { name, id, email, role, github, school, confirmMore } = teamData;
+      let employee;
+
+      if (role === "Engineer") {
+        employee = new Engineer (name, id, email, github);
+        console.log(employee);
+      } else if (role === "Intern") {
+        employee = new Intern (name, id, email, school);
+        console.log(employee);
+      }
+      employees.push(employee);
+
+      if (confirmMore) {
+        return addEmployee(employees);
+      } else {
+        return employees
+      }
+    })
+  };
+
+
     // .then(function ({ name, role, id, email }) {
     //   let roleDetail = "";
     //   if (role === "Intern") {
@@ -120,12 +237,12 @@ const addMan= () => {
     //       });
     //     });
     // });
-}
 
 
-console.log("adding employees");
-  // html +=
-// function to create HTML file
+
+// console.log("adding employees");
+//   // html +=
+// // function to create HTML file
 const writeFile = data => {
   fs.writeFile("./dist/roster.html", data, err => {
     if (err) {
@@ -137,7 +254,8 @@ const writeFile = data => {
   })
 };
 
-addEmployee()
+addMan()
+.then (addEmployee)
 .then(employees => {
   return genHtml(employees);
 })

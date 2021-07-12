@@ -10,7 +10,7 @@ const genMan = function (manager) {
               </div>
 
               <div class="card-body">
-              <p class="id">ID: ${manger.id}</p>
+              <p class="id">ID: ${manager.id}</p>
               <p class="email">Email: <a href="email:${manager.email}">${manager.email}</a></p>
               <p class="work">Work Number: ${manager.workNumber}</p>
               </div>
@@ -46,7 +46,7 @@ const genIn = function (intern) {
                <div class="card mx-auto mb-3" style="width: 18rem">
                <div class="card-header">
                <h3>${intern.name}</h3>
-               <h4>Engineer</h4>
+               <h4>Intern</h4>
                </div>
  
                <div class="card-body">
@@ -62,7 +62,8 @@ const genIn = function (intern) {
 
  // push array
  genHtml = (data) => {
-     employees = [];
+
+     cardArray = [];
 
      for (let i = 0; i < data.length; i++) {
          const employee = data[i];
@@ -70,29 +71,30 @@ const genIn = function (intern) {
 
          if (role === 'Manager') {
              const managerCard = genMan(employee);
-             employees.push(managerCard);
+             cardArray.push(managerCard);
          }
 
          if (role === 'Engineer') {
             const engineerCard = genEng(employee);
-            employees.push(engineerCard);
+            cardArray.push(engineerCard);
         }
 
         if (role === 'Intern') {
             const internCard = genIn(employee);
-            employees.push(internCard);
+            cardArray.push(internCard);
         }
      }
 
      // combining strings
-     const employeeCards = employees.join('')
+     const employeeCards = cardArray.join('')
 
      // return html
-     const genTeam = genHtml(employeeCards);
+     const genTeam = genPage(employeeCards);
      return genTeam;
+    }
      
      // generate html
-     const genHtml = function (employeeCards) {
+     const genPage = function (employeeCards) {
          return`
          <!DOCTYPE html>
         <html lang="en">
@@ -112,13 +114,13 @@ const genIn = function (intern) {
     <!---Employee Cards Container--->
     <div class="container">
         <div class="row">
-        ${data}
+        ${employeeCards}
 </div>
     </div> 
 </body>
 </html>
 `
-}}
+}
 
 // export
 module.exports = genHtml;
